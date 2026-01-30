@@ -25,10 +25,21 @@ let direction = { x: 1, y: 0 };
 let nextDirection = { x: 1, y: 0 };
 let score = 0;
 let level = 1;
+let foodEaten = 0; // Counter for foods eaten in current level
 let highScore = localStorage.getItem('snakeHighScore') || 0;
 let gameRunning = false;
 let gamePaused = false;
 let gameSpeed = 100; // milliseconds
+
+// Level configuration
+const levelConfig = {
+    1: { foodsToNextLevel: 5, speedMs: 100, speedMultiplier: 1, name: "Easy" },
+    2: { foodsToNextLevel: 7, speedMs: 85, speedMultiplier: 1.15, name: "Normal" },
+    3: { foodsToNextLevel: 8, speedMs: 70, speedMultiplier: 1.3, name: "Hard" },
+    4: { foodsToNextLevel: 10, speedMs: 55, speedMultiplier: 1.5, name: "Extreme" },
+    5: { foodsToNextLevel: 12, speedMs: 40, speedMultiplier: 1.8, name: "Insane" },
+    6: { foodsToNextLevel: 15, speedMs: 30, speedMultiplier: 2, name: "Nightmare" }
+};
 
 // DOM Elements
 const scoreDisplay = document.getElementById('score');
@@ -163,9 +174,11 @@ function startGame() {
         nextDirection = { x: 1, y: 0 };
         score = 0;
         level = 1;
-        gameSpeed = 100;
+        foodEaten = 0;
+        const config = levelConfig[1];
+        gameSpeed = config.speedMs;
         updateDisplay();
-        statusDisplay.textContent = '🎮 Game Started!';
+        statusDisplay.textContent = `🎮 Level 1: ${config.name} - Go!`;
         statusDisplay.className = 'status success';
     }
     
@@ -207,6 +220,7 @@ function resetGame() {
     nextDirection = { x: 1, y: 0 };
     score = 0;
     level = 1;
+    foodEaten = 0;
     gameSpeed = 100;
     
     startBtn.textContent = 'Start Game';
@@ -218,6 +232,27 @@ function resetGame() {
     
     updateDisplay();
     draw();
+}
+
+function levelUp() {
+    level++;
+    foodEaten = 0;
+    
+    const config = levelConfig[level] || levelConfig[6];
+    gameSpeed = config.speedMs;
+    
+    clearInterval(gameLoop);
+    gameLoop = setInterval(update, gameSpeed);
+    
+    statusDisplay.textContent = `⬆️ LEVEL ${level}: ${config.name}! ⬆️`;
+    statusDisplay.className = 'status success';
+    
+    // Visual feedback - show message for 2 seconds
+    setTimeout(() => {
+        if (gameRunning && !gamePaused) {
+            statusDisplay.textContent = '▶️ Playing...';
+        }
+    }, 2000);
 }
 
 function update() {
@@ -244,16 +279,16 @@ function update() {
     
     // Check food collision
     if (head.x === food.x && head.y === food.y) {
-        score += 10 * level;
+        const config = levelConfig[level] || levelConfig[6];
+        const basePoints = 10;
+        const levelBonus = level * 5;
+        score += basePoints + levelBonus; // 10 + (level * 5) points per food
+        foodEaten++;
         
-        // Level up every 5 foods eaten
-        if ((score / (10 * level)) % 5 === 0 && score > 0) {
-            level++;
-            gameSpeed = Math.max(50, 100 - (level - 1) * 10);
-            clearInterval(gameLoop);
-            gameLoop = setInterval(update, gameSpeed);
-            statusDisplay.textContent = `⬆️ Level ${level}! Speed increased!`;
-            statusDisplay.className = 'status success';
+        // Check if leveling up
+        const foodsNeeded = config.foodsToNextLevel;
+        if (foodEaten >= foodsNeeded && level < 6) {
+            levelUp();
         }
         
         food = generateFood();
@@ -326,7 +361,9 @@ function draw() {
 
 function updateDisplay() {
     scoreDisplay.textContent = score;
-    levelDisplay.textContent = level;
+    const config = levelConfig[level] || levelConfig[6];
+    const foodsNeeded = config.foodsToNextLevel;
+    levelDisplay.textContent = `${level} (${foodEaten}/${foodsNeeded})`;
     
     if (score > highScore) {
         highScore = score;
