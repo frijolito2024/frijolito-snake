@@ -38,12 +38,15 @@
             </div>
 
             <div class="mobile-controls">
-                <button class="arrow-btn" id="upBtn" data-direction="up">↑</button>
-                <div class="arrow-row">
-                    <button class="arrow-btn" id="leftBtn" data-direction="left">←</button>
-                    <button class="arrow-btn" id="downBtn" data-direction="down">↓</button>
-                    <button class="arrow-btn" id="rightBtn" data-direction="right">→</button>
+                <div class="dpad-container">
+                    <button class="dpad-btn dpad-up" id="upBtn" data-direction="up">▲</button>
+                    <div class="dpad-middle">
+                        <button class="dpad-btn dpad-left" id="leftBtn" data-direction="left">◀</button>
+                        <button class="dpad-btn dpad-down" id="downBtn" data-direction="down">▼</button>
+                        <button class="dpad-btn dpad-right" id="rightBtn" data-direction="right">▶</button>
+                    </div>
                 </div>
+                <p class="swipe-hint">💡 O desliza el dedo para controlar</p>
             </div>
 
             <div class="status" id="status"></div>

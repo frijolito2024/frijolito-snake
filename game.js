@@ -39,11 +39,48 @@ resetBtn.addEventListener('click', resetGame);
 
 document.addEventListener('keydown', handleKeyPress);
 
-// Mobile Controls
+// Mobile Controls - Button clicks
 document.getElementById('upBtn').addEventListener('click', () => changeDirection(0, -1));
 document.getElementById('downBtn').addEventListener('click', () => changeDirection(0, 1));
 document.getElementById('leftBtn').addEventListener('click', () => changeDirection(-1, 0));
 document.getElementById('rightBtn').addEventListener('click', () => changeDirection(1, 0));
+
+// Swipe Controls
+let touchStartX = 0;
+let touchStartY = 0;
+
+canvas.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, false);
+
+canvas.addEventListener('touchend', (e) => {
+    if (!gameRunning || gamePaused) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+    
+    const minSwipeDistance = 30;
+    
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        // Horizontal swipe
+        if (diffX > minSwipeDistance && direction.x === 0) {
+            changeDirection(1, 0); // Right
+        } else if (diffX < -minSwipeDistance && direction.x === 0) {
+            changeDirection(-1, 0); // Left
+        }
+    } else {
+        // Vertical swipe
+        if (diffY > minSwipeDistance && direction.y === 0) {
+            changeDirection(0, 1); // Down
+        } else if (diffY < -minSwipeDistance && direction.y === 0) {
+            changeDirection(0, -1); // Up
+        }
+    }
+}, false);
 
 // Detect mobile
 function isMobile() {
