@@ -110,7 +110,7 @@ canvas#gameCanvas {
 
 .controls {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 10px;
     justify-content: center;
     width: 100%;
@@ -118,17 +118,26 @@ canvas#gameCanvas {
 }
 
 .btn {
-    padding: 12px 24px;
+    padding: 10px 6px;
     border: none;
     border-radius: 8px;
-    font-size: 1em;
+    font-size: 0.75em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    min-width: 100px;
-    white-space: nowrap;
+    letter-spacing: 0px;
+    min-width: auto;
+    min-height: 70px;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.2;
 }
 
 .btn-primary {
@@ -177,10 +186,11 @@ canvas#gameCanvas {
     background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
     color: #333;
     font-weight: 700;
-    font-size: 1.1em;
-    padding: 12px 20px;
+    font-size: 0.75em;
+    padding: 10px 6px;
     box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
     position: relative;
+    min-height: 70px;
 }
 
 #leaderboardBtn:hover {
@@ -599,12 +609,14 @@ footer {
 
     .controls {
         gap: 8px;
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .btn {
-        padding: 10px 16px;
-        font-size: 0.9em;
-        min-width: 80px;
+        padding: 8px 4px;
+        font-size: 0.7em;
+        min-height: 60px;
+        min-width: auto;
     }
 
     .mobile-controls.visible {
@@ -650,8 +662,9 @@ footer {
     }
 
     .btn {
-        padding: 8px 12px;
-        font-size: 0.75em;
+        padding: 6px 4px;
+        font-size: 0.65em;
+        min-height: 55px;
         min-width: auto;
     }
 
