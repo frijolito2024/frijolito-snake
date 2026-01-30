@@ -491,18 +491,44 @@ function getLeaderboard() {
 function saveToLeaderboard(playerName, score, level) {
     let leaderboard = getLeaderboard();
     
-    leaderboard.push({
+    const entry = {
         name: playerName || 'Anónimo',
         score: score,
         level: level,
         date: new Date().toLocaleString('es-ES')
-    });
+    };
+    
+    leaderboard.push(entry);
     
     // Sort by score descending, keep top 50
     leaderboard.sort((a, b) => b.score - a.score);
     leaderboard = leaderboard.slice(0, 50);
     
     localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(leaderboard));
+    
+    // Also save to global database via API
+    saveToGlobalLeaderboard(entry);
+}
+
+function saveToGlobalLeaderboard(entry) {
+    // Try to save to API server (if running locally)
+    fetch('http://127.0.0.1:3000/api/leaderboard', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: entry.name,
+            score: entry.score,
+            level: entry.level
+        })
+    }).then(res => {
+        if (res.ok) {
+            console.log('✅ Score saved to global leaderboard');
+        }
+    }).catch(err => {
+        console.log('⚠️ Global leaderboard unavailable (API server not running)');
+    });
 }
 
 function setPlayerName() {
