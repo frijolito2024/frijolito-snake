@@ -172,22 +172,21 @@ canvas#gameCanvas {
 
 .mobile-controls {
     display: none;
-    grid-template-columns: repeat(3, 60px);
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    justify-content: center;
     width: 100%;
 }
 
 .mobile-controls.visible {
-    display: grid;
+    display: flex;
 }
 
 .arrow-row {
-    grid-column: 1 / -1;
     display: flex;
     gap: 10px;
     justify-content: center;
-    margin-top: 10px;
+    align-items: center;
 }
 
 .arrow-btn {
