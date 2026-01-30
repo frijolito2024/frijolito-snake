@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🫘 Frijolito Snake - El Mejor Juego del Mundo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🫘 Frijolito Snake</h1>
+            <p class="subtitle">El mejor juego de Snake del mundo</p>
+        </header>
+
+        <div class="game-wrapper">
+            <div class="game-info">
+                <div class="info-item">
+                    <span class="label">Score:</span>
+                    <span class="value" id="score">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Level:</span>
+                    <span class="value" id="level">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">High Score:</span>
+                    <span class="value" id="highScore">0</span>
+                </div>
+            </div>
+
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+            <div class="controls">
+                <button id="startBtn" class="btn btn-primary">Start Game</button>
+                <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
+                <button id="resetBtn" class="btn btn-danger">Reset</button>
+            </div>
+
+            <div class="mobile-controls">
+                <button class="arrow-btn" id="upBtn" data-direction="up">↑</button>
+                <div class="arrow-row">
+                    <button class="arrow-btn" id="leftBtn" data-direction="left">←</button>
+                    <button class="arrow-btn" id="downBtn" data-direction="down">↓</button>
+                    <button class="arrow-btn" id="rightBtn" data-direction="right">→</button>
+                </div>
+            </div>
+
+            <div class="status" id="status"></div>
+        </div>
+
+        <footer>
+            <p>Usa las flechas del teclado para controlar • En móvil usa los botones</p>
+            <p>Come las manzanas 🍎 sin chocarte contigo mismo</p>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
