@@ -6,7 +6,7 @@ Una versión épica, responsiva y completamente funcional del clásico juego Sna
 
 Controla a Pablo (sí, LA salchicha) mientras devora huevos fritos en su camino hacia la gloria gaming. Porque si Pablo puede devorar comida real, ¿por qué no en un videojuego? 
 
-## 🎮 Características Actuales (v1.5)
+## 🎮 Características Actuales (v1.8)
 
 - ✅ Juego completamente funcional
 - ✅ Responsive design (PC, Tablet, Móvil)
@@ -23,9 +23,11 @@ Controla a Pablo (sí, LA salchicha) mientras devora huevos fritos en su camino 
 - ✅ Interfaz moderna y animada con gradientes
 - ✅ Generación aleatoria de comida
 - ✅ Smart cache-busting con Service Worker
-- ✅ **NUEVO:** Leaderboard global guardado en localStorage
+- ✅ **NUEVO:** Leaderboard global en GitHub (sin servidor)
+- ✅ **NUEVO:** Sincronización automática de scores
 - ✅ **NUEVO:** Personalización de nombre de jugador
 - ✅ **NUEVO:** Top 50 scores con medallas (🥇🥈🥉)
+- ✅ **NUEVO:** Almacenamiento local + GitHub backup
 
 ## 🎯 Próximas Mejoras (Roadmap)
 
@@ -77,24 +79,48 @@ Cada nivel es más difícil y requiere más comidas para avanzar:
 
 **Ver Progreso:** El contador en la pantalla muestra tu progreso (ej: "2 (3/7)" = Nivel 2, 3 de 7 comidas para nivel siguiente)
 
-## 🏆 Leaderboard Global
+## 🏆 Leaderboard Global (GitHub-Powered)
 
-¡Compite con tus amigos! El juego registra automáticamente tus puntuaciones:
+¡Compite con el mundo! El juego guarda scores **directamente en GitHub**, sin servidor.
 
-**Cómo funciona:**
-1. Haz clic en el botón "🏆 Leaderboard"
-2. Ingresa tu nombre (se guarda localmente)
-3. Cuando terminas una partida, tu score se guarda automáticamente
-4. Ve tu posición en el ranking global
+**Arquitectura:**
+- 🎮 **Juego:** GitHub Pages (estático)
+- 💾 **Database:** `db.json` en el repo
+- 🔐 **Auth:** GitHub Personal Access Token (opcional)
+- ☁️ **Sync:** Automático al terminar cada partida
 
-**Características del Leaderboard:**
-- Top 50 scores guardados
-- Medallas para los top 3 (🥇🥈🥉)
-- Muestra nombre, score, nivel y fecha
-- Información guardada en localStorage (persiste entre sesiones)
-- Sincronización entre pestañas
+### Setup (5 minutos)
 
-**Nota:** El leaderboard es local (por navegador/dispositivo). Para compartir scores, toma una captura de pantalla.
+1. **En el Juego:**
+   - Click en **"🏆 Leaderboard"**
+   - Expande **"🔐 Sincronización Global"**
+   - Copia tu GitHub Token aquí
+
+2. **Generar Token:**
+   - Ve a: https://github.com/settings/tokens/new
+   - Scopes: `repo` (SOLO eso)
+   - Generate → Copy token
+
+3. **Listo:**
+   - Tus scores se sincronizan automáticamente
+   - Todos ven el mismo leaderboard global
+
+### Características
+
+✅ **Sin servidor:** Todo en GitHub, sin costos
+✅ **Automático:** Sincroniza al terminar partida
+✅ **Offline:** Funciona sin conexión (sincroniza después)
+✅ **Histórico:** Todos los scores guardados
+✅ **Colaborativo:** Leaderboard global compartido
+
+### Ver Global Leaderboard
+
+- **En el juego:** Click "🏆 Leaderboard"
+- **En GitHub:** https://github.com/frijolito2024/frijolito-snake/blob/master/db.json
+
+### Más Info
+
+Lee [GITHUB_INTEGRATION.md](./GITHUB_INTEGRATION.md) para detalles técnicos.
 
 ## 🛠️ Tecnologías
 

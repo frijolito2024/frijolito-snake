@@ -494,6 +494,78 @@ footer {
     border-top: 2px solid #eee;
 }
 
+/* GitHub Config Styles */
+.github-config {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    border: 2px solid #eee;
+}
+
+.github-config details {
+    cursor: pointer;
+}
+
+.github-config summary {
+    font-weight: 600;
+    color: #333;
+    user-select: none;
+    transition: color 0.2s;
+    padding: 8px;
+    margin: -8px;
+    border-radius: 5px;
+}
+
+.github-config summary:hover {
+    background: #f0f0f0;
+    color: #d4451e;
+}
+
+.github-config p {
+    margin: 10px 0 8px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.github-config .token-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #d4451e;
+    border-radius: 8px;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    font-family: monospace;
+}
+
+.github-config .token-input:focus {
+    outline: none;
+    border-color: #ff8c42;
+    box-shadow: 0 0 10px rgba(212, 69, 30, 0.3);
+}
+
+.github-config .btn.small {
+    padding: 8px 16px;
+    font-size: 0.85em;
+    width: 100%;
+}
+
+.token-help {
+    font-size: 0.85em;
+    color: #999;
+    margin-top: 10px !important;
+}
+
+.token-help a {
+    color: #d4451e;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.token-help a:hover {
+    text-decoration: underline;
+}
+
 /* Responsive Design */
 @media (max-width: 600px) {
     .container {

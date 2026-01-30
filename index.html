@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>🫘 Frijolito Snake - El Mejor Juego del Mundo</title>
-    <link rel="stylesheet" href="style.css?v=1.8">
+    <link rel="stylesheet" href="style.css?v=1.9">
 </head>
 <body>
     <div class="container">
@@ -68,6 +68,15 @@
                         <input type="text" id="playerName" placeholder="Tu nombre (max 15 caracteres)" maxlength="15">
                         <button id="setPlayerBtn" class="btn btn-primary">Guardar Nombre</button>
                     </div>
+                    <div class="github-config">
+                        <details>
+                            <summary>🔐 Sincronización Global (Opcional)</summary>
+                            <p>Para guardar scores en GitHub automáticamente, necesitas un Personal Access Token:</p>
+                            <input type="password" id="githubToken" placeholder="Tu GitHub Personal Access Token" class="token-input">
+                            <button id="setGithubTokenBtn" class="btn btn-primary small">Guardar Token</button>
+                            <p class="token-help">📝 <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Crear un token aquí</a> (scopes: repo)</p>
+                        </details>
+                    </div>
                     <div id="leaderboardList" class="leaderboard-list"></div>
                 </div>
             </div>
@@ -79,6 +88,6 @@
         </footer>
     </div>
 
-    <script src="game.js?v=1.8"></script>
+    <script src="game.js?v=1.9"></script>
 </body>
 </html>

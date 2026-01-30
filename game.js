@@ -78,6 +78,8 @@ const closeLeaderboardBtn = document.getElementById('closeLeaderboard');
 const playerNameInput = document.getElementById('playerName');
 const setPlayerBtn = document.getElementById('setPlayerBtn');
 const leaderboardList = document.getElementById('leaderboardList');
+const githubTokenInput = document.getElementById('githubToken');
+const setGithubTokenBtn = document.getElementById('setGithubTokenBtn');
 
 let gameLoop;
 
@@ -96,6 +98,7 @@ resetBtn.addEventListener('click', resetGame);
 leaderboardBtn.addEventListener('click', showLeaderboard);
 closeLeaderboardBtn.addEventListener('click', closeLeaderboard);
 setPlayerBtn.addEventListener('click', setPlayerName);
+setGithubTokenBtn.addEventListener('click', setGithubToken);
 
 document.addEventListener('keydown', handleKeyPress);
 
@@ -511,24 +514,105 @@ function saveToLeaderboard(playerName, score, level) {
 }
 
 function saveToGlobalLeaderboard(entry) {
-    // Try to save to API server (if running locally)
-    fetch('http://127.0.0.1:3000/api/leaderboard', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+    // Save to GitHub directly using GitHub API
+    saveToGitHubDB(entry);
+}
+
+async function saveToGitHubDB(entry) {
+    const OWNER = 'frijolito2024';
+    const REPO = 'frijolito-snake';
+    const PATH = 'db.json';
+    const TOKEN = localStorage.getItem('githubToken') || '';
+    
+    if (!TOKEN) {
+        console.log('⚠️ No GitHub token configured. Scores only saved locally.');
+        return;
+    }
+    
+    try {
+        // 1. Get current db.json
+        const getResponse = await fetch(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': `token ${TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            }
+        );
+        
+        if (!getResponse.ok) {
+            console.error('Failed to fetch db.json from GitHub');
+            return;
+        }
+        
+        const data = await getResponse.json();
+        const currentContent = JSON.parse(atob(data.content));
+        const sha = data.sha;
+        
+        // 2. Add new entry
+        currentContent.leaderboard.push({
             name: entry.name,
             score: entry.score,
-            level: entry.level
-        })
-    }).then(res => {
-        if (res.ok) {
-            console.log('✅ Score saved to global leaderboard');
+            level: entry.level,
+            date: new Date().toISOString()
+        });
+        
+        // 3. Sort and limit to top 100
+        currentContent.leaderboard.sort((a, b) => b.score - a.score);
+        currentContent.leaderboard = currentContent.leaderboard.slice(0, 100);
+        currentContent.lastUpdated = new Date().toISOString();
+        
+        // 4. Update db.json
+        const updateResponse = await fetch(
+            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${TOKEN}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: `🌭 New score: ${entry.name} (${entry.score} pts, Lvl ${entry.level})`,
+                    content: btoa(JSON.stringify(currentContent, null, 2)),
+                    sha: sha
+                })
+            }
+        );
+        
+        if (updateResponse.ok) {
+            console.log('✅ Score saved to GitHub database');
+            // Refresh leaderboard display
+            updateLeaderboardDisplay();
         }
-    }).catch(err => {
-        console.log('⚠️ Global leaderboard unavailable (API server not running)');
-    });
+    } catch (err) {
+        console.error('Error saving to GitHub:', err);
+    }
+}
+
+async function loadFromGitHub() {
+    const OWNER = 'frijolito2024';
+    const REPO = 'frijolito-snake';
+    const PATH = 'db.json';
+    
+    try {
+        const response = await fetch(
+            `https://raw.githubusercontent.com/${OWNER}/${REPO}/master/${PATH}`
+        );
+        
+        if (!response.ok) {
+            console.log('Could not load global leaderboard from GitHub');
+            return null;
+        }
+        
+        const data = await response.json();
+        return data.leaderboard || [];
+    } catch (err) {
+        console.error('Error loading from GitHub:', err);
+        return null;
+    }
 }
 
 function setPlayerName() {
@@ -541,9 +625,29 @@ function setPlayerName() {
     }
 }
 
-function showLeaderboard() {
+function setGithubToken() {
+    const token = githubTokenInput.value.trim();
+    if (token && token.length > 0) {
+        localStorage.setItem('githubToken', token);
+        githubTokenInput.value = '';
+        statusDisplay.textContent = '✅ GitHub token guardado! Scores ahora se sincronizarán.';
+        statusDisplay.className = 'status success';
+        setTimeout(() => {
+            statusDisplay.textContent = '▶️ Playing...';
+        }, 2000);
+    }
+}
+
+async function showLeaderboard() {
     leaderboardModal.classList.remove('hidden');
     playerNameInput.placeholder = `Tu nombre (actualmente: ${currentPlayerName})`;
+    
+    // Try to load from GitHub first
+    const githubLeaderboard = await loadFromGitHub();
+    if (githubLeaderboard && githubLeaderboard.length > 0) {
+        console.log('Loaded leaderboard from GitHub');
+    }
+    
     updateLeaderboardDisplay();
 }
 
