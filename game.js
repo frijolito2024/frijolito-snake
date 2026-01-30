@@ -72,8 +72,19 @@ const pauseBtn = document.getElementById('pauseBtn');
 const resetBtn = document.getElementById('resetBtn');
 const statusDisplay = document.getElementById('status');
 const mobileControls = document.querySelector('.mobile-controls');
+const leaderboardBtn = document.getElementById('leaderboardBtn');
+const leaderboardModal = document.getElementById('leaderboardModal');
+const closeLeaderboardBtn = document.getElementById('closeLeaderboard');
+const playerNameInput = document.getElementById('playerName');
+const setPlayerBtn = document.getElementById('setPlayerBtn');
+const leaderboardList = document.getElementById('leaderboardList');
 
 let gameLoop;
+
+// Leaderboard Management
+const LEADERBOARD_KEY = 'pabloDevLeaderboard';
+const PLAYER_NAME_KEY = 'playerNamePablo';
+let currentPlayerName = localStorage.getItem(PLAYER_NAME_KEY) || 'Anónimo';
 
 // Initialize
 highScoreDisplay.textContent = highScore;
@@ -82,8 +93,18 @@ highScoreDisplay.textContent = highScore;
 startBtn.addEventListener('click', startGame);
 pauseBtn.addEventListener('click', togglePause);
 resetBtn.addEventListener('click', resetGame);
+leaderboardBtn.addEventListener('click', showLeaderboard);
+closeLeaderboardBtn.addEventListener('click', closeLeaderboard);
+setPlayerBtn.addEventListener('click', setPlayerName);
 
 document.addEventListener('keydown', handleKeyPress);
+
+// Close modal on background click
+leaderboardModal.addEventListener('click', (e) => {
+    if (e.target === leaderboardModal) {
+        closeLeaderboard();
+    }
+});
 
 // Mobile Controls - Button clicks
 document.getElementById('upBtn').addEventListener('click', () => changeDirection(0, -1));
@@ -456,6 +477,82 @@ function endGame(message) {
         highScoreDisplay.textContent = highScore;
         localStorage.setItem('snakeHighScore', highScore);
     }
+    
+    // Save to leaderboard
+    saveToLeaderboard(currentPlayerName, score, level);
+}
+
+// Leaderboard Functions
+function getLeaderboard() {
+    const stored = localStorage.getItem(LEADERBOARD_KEY);
+    return stored ? JSON.parse(stored) : [];
+}
+
+function saveToLeaderboard(playerName, score, level) {
+    let leaderboard = getLeaderboard();
+    
+    leaderboard.push({
+        name: playerName || 'Anónimo',
+        score: score,
+        level: level,
+        date: new Date().toLocaleString('es-ES')
+    });
+    
+    // Sort by score descending, keep top 50
+    leaderboard.sort((a, b) => b.score - a.score);
+    leaderboard = leaderboard.slice(0, 50);
+    
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(leaderboard));
+}
+
+function setPlayerName() {
+    const name = playerNameInput.value.trim();
+    if (name && name.length > 0) {
+        currentPlayerName = name;
+        localStorage.setItem(PLAYER_NAME_KEY, name);
+        playerNameInput.value = '';
+        updateLeaderboardDisplay();
+    }
+}
+
+function showLeaderboard() {
+    leaderboardModal.classList.remove('hidden');
+    playerNameInput.placeholder = `Tu nombre (actualmente: ${currentPlayerName})`;
+    updateLeaderboardDisplay();
+}
+
+function closeLeaderboard() {
+    leaderboardModal.classList.add('hidden');
+}
+
+function updateLeaderboardDisplay() {
+    const leaderboard = getLeaderboard();
+    const medals = ['🥇', '🥈', '🥉'];
+    
+    if (leaderboard.length === 0) {
+        leaderboardList.innerHTML = '<div class="empty-leaderboard">Sin puntuaciones aún. ¡Sé el primero!</div>';
+        return;
+    }
+    
+    let html = '';
+    leaderboard.forEach((entry, index) => {
+        const rank = index + 1;
+        const medal = medals[index] || `${rank}º`;
+        const isCurrentPlayer = entry.name === currentPlayerName && index < 3; // Only highlight top 3 current player
+        
+        html += `
+            <div class="leaderboard-entry ${isCurrentPlayer ? 'current-player' : ''}">
+                <div class="entry-rank">${medal}</div>
+                <div class="entry-info">
+                    <div class="entry-name">${entry.name}</div>
+                    <div class="entry-score">${entry.score} puntos • Nivel ${entry.level}</div>
+                </div>
+                <div class="entry-level">Lvl ${entry.level}</div>
+            </div>
+        `;
+    });
+    
+    leaderboardList.innerHTML = html;
 }
 
 // Initial draw

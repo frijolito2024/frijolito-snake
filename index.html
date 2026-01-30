@@ -7,7 +7,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>🫘 Frijolito Snake - El Mejor Juego del Mundo</title>
-    <link rel="stylesheet" href="style.css?v=1.5">
+    <link rel="stylesheet" href="style.css?v=1.6">
 </head>
 <body>
     <div class="container">
@@ -38,6 +38,7 @@
                 <button id="startBtn" class="btn btn-primary">Start Game</button>
                 <button id="pauseBtn" class="btn btn-secondary" disabled>Pause</button>
                 <button id="resetBtn" class="btn btn-danger">Reset</button>
+                <button id="leaderboardBtn" class="btn btn-secondary">🏆 Leaderboard</button>
             </div>
 
             <div class="mobile-controls">
@@ -55,12 +56,29 @@
             <div class="status" id="status"></div>
         </div>
 
+        <!-- Leaderboard Modal -->
+        <div id="leaderboardModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🏆 Leaderboard Global</h2>
+                    <button class="close-btn" id="closeLeaderboard">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="player-input">
+                        <input type="text" id="playerName" placeholder="Tu nombre (max 15 caracteres)" maxlength="15">
+                        <button id="setPlayerBtn" class="btn btn-primary">Guardar Nombre</button>
+                    </div>
+                    <div id="leaderboardList" class="leaderboard-list"></div>
+                </div>
+            </div>
+        </div>
+
         <footer>
             <p>Usa las flechas del teclado para controlar • En móvil desliza</p>
             <p>Come los huevos fritos 🍳 sin chocarte contigo mismo</p>
         </footer>
     </div>
 
-    <script src="game.js?v=1.5"></script>
+    <script src="game.js?v=1.6"></script>
 </body>
 </html>

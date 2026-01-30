@@ -6,7 +6,7 @@ Una versión épica, responsiva y completamente funcional del clásico juego Sna
 
 Controla a Pablo (sí, LA salchicha) mientras devora huevos fritos en su camino hacia la gloria gaming. Porque si Pablo puede devorar comida real, ¿por qué no en un videojuego? 
 
-## 🎮 Características Actuales (v1.4)
+## 🎮 Características Actuales (v1.5)
 
 - ✅ Juego completamente funcional
 - ✅ Responsive design (PC, Tablet, Móvil)
@@ -23,6 +23,9 @@ Controla a Pablo (sí, LA salchicha) mientras devora huevos fritos en su camino 
 - ✅ Interfaz moderna y animada con gradientes
 - ✅ Generación aleatoria de comida
 - ✅ Smart cache-busting con Service Worker
+- ✅ **NUEVO:** Leaderboard global guardado en localStorage
+- ✅ **NUEVO:** Personalización de nombre de jugador
+- ✅ **NUEVO:** Top 50 scores con medallas (🥇🥈🥉)
 
 ## 🎯 Próximas Mejoras (Roadmap)
 
@@ -73,6 +76,25 @@ Cada nivel es más difícil y requiere más comidas para avanzar:
 - ¡Sigue avanzando y demuestra tu destreza de salchicha hambrienta!
 
 **Ver Progreso:** El contador en la pantalla muestra tu progreso (ej: "2 (3/7)" = Nivel 2, 3 de 7 comidas para nivel siguiente)
+
+## 🏆 Leaderboard Global
+
+¡Compite con tus amigos! El juego registra automáticamente tus puntuaciones:
+
+**Cómo funciona:**
+1. Haz clic en el botón "🏆 Leaderboard"
+2. Ingresa tu nombre (se guarda localmente)
+3. Cuando terminas una partida, tu score se guarda automáticamente
+4. Ve tu posición en el ranking global
+
+**Características del Leaderboard:**
+- Top 50 scores guardados
+- Medallas para los top 3 (🥇🥈🥉)
+- Muestra nombre, score, nivel y fecha
+- Información guardada en localStorage (persiste entre sesiones)
+- Sincronización entre pestañas
+
+**Nota:** El leaderboard es local (por navegador/dispositivo). Para compartir scores, toma una captura de pantalla.
 
 ## 🛠️ Tecnologías
 
