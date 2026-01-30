@@ -3,5 +3,7 @@ dist/
 .DS_Store
 *.log
 .env
+.env.local
+.scores-cache.json
 .vscode/
 .idea/

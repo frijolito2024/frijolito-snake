@@ -514,103 +514,64 @@ function saveToLeaderboard(playerName, score, level) {
 }
 
 function saveToGlobalLeaderboard(entry) {
-    // Save to GitHub directly using GitHub API
-    saveToGitHubDB(entry);
+    // Save to proxy server (which syncs to GitHub)
+    saveToProxyServer(entry);
 }
 
-async function saveToGitHubDB(entry) {
-    const OWNER = 'frijolito2024';
-    const REPO = 'frijolito-snake';
-    const PATH = 'db.json';
-    const TOKEN = localStorage.getItem('githubToken') || '';
-    
-    if (!TOKEN) {
-        console.log('⚠️ No GitHub token configured. Scores only saved locally.');
-        return;
-    }
+async function saveToProxyServer(entry) {
+    const PROXY_URL = 'http://127.0.0.1:3000/api/save-score';
     
     try {
-        // 1. Get current db.json
-        const getResponse = await fetch(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': `token ${TOKEN}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            }
-        );
-        
-        if (!getResponse.ok) {
-            console.error('Failed to fetch db.json from GitHub');
-            return;
-        }
-        
-        const data = await getResponse.json();
-        const currentContent = JSON.parse(atob(data.content));
-        const sha = data.sha;
-        
-        // 2. Add new entry
-        currentContent.leaderboard.push({
-            name: entry.name,
-            score: entry.score,
-            level: entry.level,
-            date: new Date().toISOString()
+        const response = await fetch(PROXY_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: entry.name,
+                score: entry.score,
+                level: entry.level
+            })
         });
         
-        // 3. Sort and limit to top 100
-        currentContent.leaderboard.sort((a, b) => b.score - a.score);
-        currentContent.leaderboard = currentContent.leaderboard.slice(0, 100);
-        currentContent.lastUpdated = new Date().toISOString();
-        
-        // 4. Update db.json
-        const updateResponse = await fetch(
-            `https://api.github.com/repos/${OWNER}/${REPO}/contents/${PATH}`,
-            {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `token ${TOKEN}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    message: `🌭 New score: ${entry.name} (${entry.score} pts, Lvl ${entry.level})`,
-                    content: btoa(JSON.stringify(currentContent, null, 2)),
-                    sha: sha
-                })
-            }
-        );
-        
-        if (updateResponse.ok) {
-            console.log('✅ Score saved to GitHub database');
-            // Refresh leaderboard display
+        if (response.ok) {
+            const data = await response.json();
+            console.log('✅ Score saved:', data.githubSync ? '(synced to GitHub)' : '(cached)');
             updateLeaderboardDisplay();
+        } else {
+            console.log('⚠️ Proxy returned error, saving locally only');
         }
     } catch (err) {
-        console.error('Error saving to GitHub:', err);
+        console.log('⚠️ Proxy server not running - score saved locally only');
     }
 }
 
 async function loadFromGitHub() {
-    const OWNER = 'frijolito2024';
-    const REPO = 'frijolito-snake';
-    const PATH = 'db.json';
+    const PROXY_URL = 'http://127.0.0.1:3000/api/scores';
+    const GITHUB_URL = 'https://raw.githubusercontent.com/frijolito2024/frijolito-snake/master/db.json';
     
     try {
-        const response = await fetch(
-            `https://raw.githubusercontent.com/${OWNER}/${REPO}/master/${PATH}`
-        );
-        
-        if (!response.ok) {
-            console.log('Could not load global leaderboard from GitHub');
-            return null;
+        // Try proxy first
+        const proxyResponse = await fetch(PROXY_URL);
+        if (proxyResponse.ok) {
+            const data = await proxyResponse.json();
+            console.log('📊 Loaded from proxy server');
+            return data.scores || [];
         }
-        
-        const data = await response.json();
-        return data.leaderboard || [];
     } catch (err) {
-        console.error('Error loading from GitHub:', err);
+        console.log('Proxy not available, trying GitHub directly');
+    }
+    
+    // Fallback to GitHub
+    try {
+        const response = await fetch(GITHUB_URL);
+        if (response.ok) {
+            const data = await response.json();
+            console.log('📊 Loaded from GitHub');
+            return data.leaderboard || [];
+        }
+    } catch (err) {
+        console.error('Could not load leaderboard');
         return null;
     }
 }
