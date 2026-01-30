@@ -266,7 +266,14 @@ function levelUp() {
     clearInterval(gameLoop);
     gameLoop = setInterval(update, gameSpeed);
     
-    statusDisplay.textContent = `⬆️ LEVEL ${level}: ${config.name}! ⬆️`;
+    let levelMessage = `⬆️ LEVEL ${level}: ${config.name}! ⬆️`;
+    
+    // Easter egg: Special message for reaching Nightmare level
+    if (level === 6) {
+        levelMessage = `🌭🔥 ¡NIVEL PABLO! ¡DEVORA COMO EL MAESTRO! 🔥🌭`;
+    }
+    
+    statusDisplay.textContent = levelMessage;
     statusDisplay.className = 'status success';
     
     // Visual feedback - show message for 2 seconds

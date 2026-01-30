@@ -1,6 +1,10 @@
-# 🌭 Sausage Eater 🍳
+# 🌭 Pablo el Devorador de Huevos 🍳
 
-Una versión épica, responsiva y completamente funcional del clásico juego Snake, pero con una salchicha hambrienta comiendo huevos fritos en lugar de una aburrida serpiente comiendo manzanas. 
+Una versión épica, responsiva y completamente funcional del clásico juego Snake.
+
+**Inspirado en:** La insaciable pasión de Pablo por las salchichas y los huevos fritos 🤤
+
+Controla a Pablo (sí, LA salchicha) mientras devora huevos fritos en su camino hacia la gloria gaming. Porque si Pablo puede devorar comida real, ¿por qué no en un videojuego? 
 
 ## 🎮 Características Actuales (v1.4)
 
@@ -93,6 +97,18 @@ El juego está deployado en GitHub Pages y listo para jugar.
 
 ---
 
+## 🎉 Easter Egg / Tribute
+
+Este juego está dedicado a **Pablo** 🌭, amigo del grupo que tiene una afinidad comprobada por:
+- Salchichas (obviamente, es la protagonista)
+- Huevos fritos (la comida a devorar)
+- Gameplay épico (porque Pablo es épico)
+
+*"Vas a clonar mis nalgas" - Pablo, 2026*
+
+---
+
 **Hecho por:** Frijolito 🫘
+**Inspirado por:** Juan (la idea maestra de tema) + Pablo (el meme)
 **Última actualización:** 2026-01-30
-**Versión:** 1.0.0
+**Versión:** 1.4.0

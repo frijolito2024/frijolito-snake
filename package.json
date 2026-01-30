@@ -1,7 +1,7 @@
 {
-  "name": "frijolito-snake",
-  "version": "1.0.0",
-  "description": "El mejor juego de Snake del mundo - Responsive y completamente funcional",
+  "name": "pablo-devorador-de-huevos",
+  "version": "1.4.0",
+  "description": "Pablo el Devorador de Huevos - El mejor juego de Snake dedicado a Pablo y su pasión por salchichas y huevos",
   "main": "game.js",
   "scripts": {
     "start": "python -m http.server 8000",
