@@ -1,3 +1,16 @@
+// Register Service Worker for smart cache management
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+        .then((registration) => {
+            console.log('✅ Service Worker registered');
+            // Check for updates every hour
+            setInterval(() => registration.update(), 3600000);
+        })
+        .catch((error) => {
+            console.log('Service Worker registration failed:', error);
+        });
+}
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
