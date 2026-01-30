@@ -1,8 +1,8 @@
-# 🫘 Frijolito Snake - El Mejor Juego del Mundo
+# 🌭 Sausage Eater 🍳
 
-Un juego de Snake moderno, responsive y completamente funcional en navegador. 
+Una versión épica, responsiva y completamente funcional del clásico juego Snake, pero con una salchicha hambrienta comiendo huevos fritos en lugar de una aburrida serpiente comiendo manzanas. 
 
-## 🎮 Características Actuales (v1.2)
+## 🎮 Características Actuales (v1.4)
 
 - ✅ Juego completamente funcional
 - ✅ Responsive design (PC, Tablet, Móvil)
@@ -64,9 +64,9 @@ Cada nivel es más difícil y requiere más comidas para avanzar:
 | 6 | Nightmare | 15 | 30ms | 40 pts |
 
 **Ejemplo:** 
-- Nivel 1: Come 5 manzanas, subes a Nivel 2
-- En Nivel 2: Come 7 manzanas, subes a Nivel 3
-- ¡Sigue avanzando y demuestra tu destreza!
+- Nivel 1: Come 5 huevos fritos, subes a Nivel 2
+- En Nivel 2: Come 7 huevos fritos, subes a Nivel 3
+- ¡Sigue avanzando y demuestra tu destreza de salchicha hambrienta!
 
 **Ver Progreso:** El contador en la pantalla muestra tu progreso (ej: "2 (3/7)" = Nivel 2, 3 de 7 comidas para nivel siguiente)
 

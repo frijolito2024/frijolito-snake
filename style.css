@@ -37,7 +37,7 @@ body {
 }
 
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #d4451e 0%, #ff8c42 100%);
     color: white;
     padding: 30px;
     text-align: center;
@@ -76,7 +76,7 @@ h1 {
     padding: 15px;
     border-radius: 10px;
     text-align: center;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #d4451e;
 }
 
 .info-item .label {
@@ -90,7 +90,7 @@ h1 {
 .info-item .value {
     display: block;
     font-size: 1.8em;
-    color: #667eea;
+    color: #d4451e;
     font-weight: bold;
 }
 
@@ -99,8 +99,8 @@ canvas#gameCanvas {
     max-width: 400px;
     height: auto;
     aspect-ratio: 1;
-    background: #1a1a1a;
-    border: 3px solid #667eea;
+    background: #0a0a0a;
+    border: 3px solid #d4451e;
     border-radius: 10px;
     display: block;
     image-rendering: pixelated;
@@ -131,13 +131,13 @@ canvas#gameCanvas {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #d4451e 0%, #ff8c42 100%);
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 5px 15px rgba(212, 69, 30, 0.4);
 }
 
 .btn-primary:disabled {
@@ -199,7 +199,7 @@ canvas#gameCanvas {
 
 .dpad-btn {
     border: none;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #d4451e 0%, #ff8c42 100%);
     color: white;
     font-size: 1.8em;
     border-radius: 12px;
@@ -211,7 +211,7 @@ canvas#gameCanvas {
     justify-content: center;
     touch-action: manipulation;
     user-select: none;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(212, 69, 30, 0.3);
 }
 
 .dpad-up, .dpad-down {
@@ -244,7 +244,7 @@ canvas#gameCanvas {
 .status {
     text-align: center;
     font-size: 1.1em;
-    color: #667eea;
+    color: #d4451e;
     font-weight: 600;
     min-height: 30px;
 }

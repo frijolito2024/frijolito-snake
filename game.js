@@ -1,3 +1,25 @@
+// Polyfill for roundRect (for older browsers)
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+    CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+        if (Array.isArray(r)) {
+            var r1 = r[0] || 0, r2 = r[1] || r[0] || 0, r3 = r[2] || r[0] || 0, r4 = r[3] || r[1] || r[0] || 0;
+        } else {
+            var r1 = r2 = r3 = r4 = r || 0;
+        }
+        this.beginPath();
+        this.moveTo(x + r1, y);
+        this.lineTo(x + w - r2, y);
+        this.quadraticCurveTo(x + w, y, x + w, y + r2);
+        this.lineTo(x + w, y + h - r3);
+        this.quadraticCurveTo(x + w, y + h, x + w - r3, y + h);
+        this.lineTo(x + r4, y + h);
+        this.quadraticCurveTo(x, y + h, x, y + h - r4);
+        this.lineTo(x, y + r1);
+        this.quadraticCurveTo(x, y, x + r1, y);
+        this.closePath();
+    };
+}
+
 // Register Service Worker for smart cache management
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
@@ -321,39 +343,76 @@ function draw() {
         ctx.stroke();
     }
     
-    // Draw food
-    ctx.fillStyle = '#ff6b6b';
+    // Draw food (Fried Egg 🍳)
+    const eggX = (food.x + 0.5) * gridSize;
+    const eggY = (food.y + 0.5) * gridSize;
+    const eggSize = gridSize * 0.4;
+    
+    // Egg white
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = '#ffeb99';
+    ctx.shadowBlur = 8;
     ctx.beginPath();
-    ctx.arc(
-        (food.x + 0.5) * gridSize,
-        (food.y + 0.5) * gridSize,
-        gridSize * 0.35,
-        0,
-        Math.PI * 2
-    );
+    ctx.ellipse(eggX, eggY, eggSize, eggSize * 0.8, 0, 0, Math.PI * 2);
     ctx.fill();
     
-    // Draw snake
+    // Egg yolk
+    ctx.fillStyle = '#ffeb99';
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.arc(eggX, eggY, eggSize * 0.45, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.shadowColor = 'transparent';
+    
+    // Draw snake (Sausage 🌭)
     snake.forEach((segment, index) => {
         if (index === 0) {
-            // Head
-            ctx.fillStyle = '#51cf66';
-            ctx.shadowColor = '#51cf66';
+            // Head - Sausage head with shine
+            ctx.fillStyle = '#d4451e';
+            ctx.shadowColor = '#ff6b4a';
             ctx.shadowBlur = 10;
+            
+            // Sausage body with rounded corners
+            ctx.beginPath();
+            ctx.roundRect(
+                segment.x * gridSize + 1,
+                segment.y * gridSize + 1,
+                gridSize - 2,
+                gridSize - 2,
+                [3, 3, 3, 3]
+            );
+            ctx.fill();
+            
+            // Shine on sausage
+            ctx.fillStyle = 'rgba(255, 200, 100, 0.4)';
+            ctx.beginPath();
+            ctx.arc(
+                segment.x * gridSize + gridSize * 0.35,
+                segment.y * gridSize + gridSize * 0.35,
+                gridSize * 0.2,
+                0,
+                Math.PI * 2
+            );
+            ctx.fill();
         } else {
-            // Body
-            const opacity = 1 - (index / snake.length) * 0.3;
-            ctx.fillStyle = `rgba(81, 207, 102, ${opacity})`;
-            ctx.shadowColor = 'rgba(81, 207, 102, 0.5)';
+            // Body - Sausage segments
+            const opacity = 1 - (index / snake.length) * 0.4;
+            ctx.fillStyle = `rgba(212, 69, 30, ${opacity})`;
+            ctx.shadowColor = `rgba(255, 107, 74, ${opacity * 0.7})`;
             ctx.shadowBlur = 5;
+            
+            ctx.beginPath();
+            ctx.roundRect(
+                segment.x * gridSize + 1,
+                segment.y * gridSize + 1,
+                gridSize - 2,
+                gridSize - 2,
+                [3, 3, 3, 3]
+            );
+            ctx.fill();
         }
-        
-        ctx.fillRect(
-            segment.x * gridSize + 1,
-            segment.y * gridSize + 1,
-            gridSize - 2,
-            gridSize - 2
-        );
     });
     
     ctx.shadowColor = 'transparent';
@@ -394,4 +453,4 @@ function endGame(message) {
 
 // Initial draw
 draw();
-statusDisplay.textContent = '🫘 Ready to play?';
+statusDisplay.textContent = '🌭 Preparado para comer huevos?';
